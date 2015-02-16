@@ -20,37 +20,50 @@ angular.module('starter', ['ionic', 'ngCordova'])
 
 angular.module('starter').controller('AppCtrl', function($scope, $ionicPlatform, $cordovaBackgroundGeolocation, $http){
 
-  $scope.testing = 'hello'
+  $scope.reminder = {}
 
-  // document.addEventListener('deviceready', function(){
-  //   // var options = {url: 'http://requestb.in/1dnztom1'};
+  var getItemsFromLocalStorage = function(){
+      var localStorage = window.localStorage['reminder_items']
+      $scope.items = ((localStorage === "null") || (localStorage === "undefined") || !localStorage) ? [] : JSON.parse(localStorage)
+  };
 
-  //   $cordovaBackgroundGeolocation.configure(options)
-  //   .then(
-  //     null, // Background never resolves
-  //     function (err) { // error callback
-  //     },
-  //     function (location) { // notify callback
+  getItemsFromLocalStorage();
 
-  //     });
+  var saveItemToLocalStorage = function(item){
+    $scope.items.push(item);
+    updateLocalStorage();
+  };
 
-  //   $cordovaBackgroundGeolocation.start()
-  // }, false)
+  var updateLocalStorage = function(){
+    window.localStorage['reminder_items'] = JSON.stringify($scope.items);
+    getItemsFromLocalStorage()
+  };
 
+  $scope.itemKeyDown = function(event){
+    if ((event.keyCode != 13) || (!$scope.reminder.item)) return;
+    saveItemToLocalStorage($scope.reminder.item);
+    $scope.reminder = {}
+  }
 
+  $scope.clearLocalStorage = function(){
+    window.localStorage['reminder_items'] = null
+    getItemsFromLocalStorage();
+  };
 
-  //   $scope.stopBackgroundGeolocation = function () {
-  //     $cordovaBackgroundGeolocation.stop();
-  //   };
+  $scope.deleteItemFromLocalStorage = function(item){
+    var index = $scope.items.indexOf(item);
+    $scope.items.splice(index, 1);
+    updateLocalStorage();
+  };
 
   document.addEventListener('deviceready', function () {
-      // window.geofence is now available
+
       window.geofence.initialize();
       window.geofence.addOrUpdate({
         id:             "69ca1b88-6fbe-4e80-a4d4-ff4d3748acdb",
         latitude:       51.56893555838419, 
         longitude:      -0.1121797934174, 
-        radius:         150, 
+        radius:         50, 
         transitionType: TransitionType.ENTER, 
         notification: {    
             id:             1,     
