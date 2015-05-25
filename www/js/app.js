@@ -61,9 +61,11 @@ angular.module('starter').controller('AppCtrl', function($scope, $ionicPlatform,
       window.geofence.initialize();
       window.geofence.addOrUpdate({
         id:             "69ca1b88-6fbe-4e80-a4d4-ff4d3748acdb",
-        latitude:       51.56893555838419, 
-        longitude:      -0.1121797934174, 
-        radius:         50, 
+        // latitude:       51.56893555838419, 
+        // longitude:      -0.1121797934174, 
+        latitude: 51.5383264273449,
+        longitude: -0.076271757483,
+        radius:         120, 
         transitionType: TransitionType.ENTER, 
         notification: {    
             id:             1,     
@@ -76,6 +78,9 @@ angular.module('starter').controller('AppCtrl', function($scope, $ionicPlatform,
       }, function (reason) {
           console.log('Adding geofence failed', reason);
       })
+
+
+
   }, false);
   
 

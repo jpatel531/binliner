@@ -42,17 +42,11 @@
         <ul class="list">
           <li class="item" ng-repeat="item in items track by $index" >
 
-
           <ion-slide-box show-pager="false">
             <ion-slide on-swipe-left="deleteItemFromLocalStorage(item)">
               {{item}}
             </ion-slide>
 
-
-   <!--          <ion-slide>
-      
-
-            </ion-slide> -->
 
           </ion-slide-box>
 
